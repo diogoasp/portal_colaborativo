@@ -1,0 +1,6 @@
+<h2>Deixar Feedback para {{ projeto.nome }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar</button>
+</form>
