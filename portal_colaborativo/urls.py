@@ -13,6 +13,6 @@ urlpatterns = [
     path('projetos/<int:pk>/', views.ProjetoDetailView.as_view(), name='detalhes_projeto'),
     # path('projetos/<int:pk>/feedback/', views.criar_feedback, name='criar_feedback'),
     path('interacoes/', views.InteracaoListView.as_view(), name='lista_interacoes'),
-    path('interacao/nova/', views.InteracaoCreateView.as_view(), name='nova_interacao'),
-    path('interacao/editar/<int:pk>/', views.InteracaoUpdateView.as_view(), name='editar_interacao'),
+    path('interacao/nova/', views.InteracaoView.as_view(), name='nova_interacao'),
+    path('interacao/editar/<int:pk>/', views.InteracaoView.as_view(), name='editar_interacao'),
 ]

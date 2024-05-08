@@ -13,9 +13,5 @@ class ProjetoForm(forms.ModelForm):
 class InteracaoForm(forms.ModelForm):
     class Meta:
         model = Interacao
-        fields = ['projeto', 'descricao','nome']
+        fields = ['projeto','descricao','nome', 'estaAtiva']
 
-class RespostaForm(forms.ModelForm):
-    class Meta:
-        model = Resposta
-        fields = ['interacao', 'stakeholder','pergunta','resposta']

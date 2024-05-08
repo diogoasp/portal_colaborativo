@@ -1,0 +1,41 @@
+#form-container {
+    margin: 20px;
+}
+.input-container {
+    margin-bottom: 10px;
+}
+.question-container {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+.answer-container input {
+    width: 10% !important;
+}
+.answer-container label {
+    width: 70% !important;
+}
+
+.answer-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.answer-container input[type="text"] {
+    flex: 1;
+}
+.answer-container button {
+    margin-left: 10px;
+}
+.actions {
+    width: 20%;
+    text-align-last: end;
+}
+.add-container select, input {
+    width: 84% !important;
+    margin-right: 2% !important;
+}
+.add-container button {
+    width: 17.2% !important;
+}

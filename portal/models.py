@@ -1,6 +1,7 @@
 from typing import Any
 from django.db import models
 from django.contrib.auth.models import User
+
 class Usuario(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     cpf = models.CharField(max_length=11, unique=True)
@@ -61,11 +62,12 @@ class Interacao(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
     nome = models.CharField(max_length=255)
     estaAtiva = models.BooleanField(default=True, null=False, blank=False)
+    formulario = models.TextField()
     def __str__(self):
         return f'Interacao em {self.projeto.nome}'
 
 class Pergunta(models.Model):
-    texto = models.TextField()
+    pergunta = models.CharField(max_length=255)
 	
 class Resposta(models.Model):
     interacao = models.ForeignKey(Interacao, on_delete=models.CASCADE, related_name='respostas')
@@ -74,25 +76,11 @@ class Resposta(models.Model):
     resposta = models.TextField()
     data_resposta = models.DateTimeField(auto_now_add=True)
     class Meta:
-        unique_together = ('interacao', 'stakeholder')
+        unique_together = ('pergunta', 'stakeholder')
 
     def __str__(self):
         return f'Resposta de {self.stakeholder} para {self.interacao}'
 
-class FormularioInteracao(Interacao):
-    def __str__(self):
-        return f'Interacao em {self.nome}'
-    
-    def registrar_respostas(self, stakeholder, respostas):
-        for pergunta_id, resposta in respostas.items():
-            pergunta = Pergunta.objects.get(id=pergunta_id)
-            Resposta.objects.create(
-                interacao=self,
-                stakeholder=stakeholder,
-                pergunta=pergunta,
-                resposta=resposta
-            )
-    
 
 
     

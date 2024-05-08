@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
 from django.urls import reverse_lazy
 from .models import Projeto, Interacao, Gerente
 from .forms import ProjetoForm, InteracaoForm
@@ -12,7 +12,7 @@ class HomeView(ListView):
     def get(self,request):
         gerente = Gerente.objects.get(usuario=self.request.user)
 
-        projetos = Projeto.objects.filter(gerente= gerente)
+        projetos = Projeto.objects.filter(gerente=gerente)
         interacoes = Interacao.objects.filter(estaAtiva=True, projeto__gerente=gerente)
 
         return render(request,'home.html',{'projetos':projetos, 'interacoes':interacoes})
@@ -68,15 +68,10 @@ class ProjetoUpdateView(UpdateView):
     form_class = ProjetoForm
     template_name = 'projeto/projeto_form.html'
     success_url = reverse_lazy('lista_projetos')  # Substitua 'lista_projetos' pela URL de destino após a edição
-  
-class InteracaoCreateView(CreateView):
-    model = Interacao
-    form_class = InteracaoForm
-    template_name = 'interacao/interacao_form.html'
-    success_url = reverse_lazy('lista_interacoes')  # Substitua 'lista_interacoes' pela URL de destino após a criação
 
-class InteracaoUpdateView(UpdateView):
-    model = Interacao
-    form_class = InteracaoForm
-    template_name = 'interacao/interacao_form.html'
-    success_url = reverse_lazy('lista_interacoes')  # Substitua 'lista_interacoes' pela URL de destino após a edição
+class InteracaoView(TemplateView):
+    form = 'interacao/interacao_form.html'
+    def get(self,request):
+        print("interação view")
+        interacao = InteracaoForm()
+        return render(request, self.form, {'form': interacao})
