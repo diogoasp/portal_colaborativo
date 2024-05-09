@@ -1,6 +1,6 @@
 let questionCount = 0;
 let answerCount = 0;
-
+let questionController = {}
 function captureHTML() {
     const dynamicForm = document.getElementById('dynamic-form');
     const clone = dynamicForm.cloneNode(true);
@@ -8,6 +8,25 @@ function captureHTML() {
     // Remove os botões de ação do clone
     const buttons = clone.querySelectorAll('button');
     buttons.forEach(button => button.remove());
+
+    const types = clone.querySelectorAll('select.type-select');
+    types.forEach(t => t.remove());
+
+    const labels = clone.querySelectorAll('input.question');
+    labels.forEach(l => {
+      l.setAttribute('placeholder', l.value);
+      x = l.cloneNode();
+      x.setAttribute('hidden', true);
+      x.setAttribute('name', l.id);
+      x.setAttribute('value', l.value);
+      x.value = l.value;
+      x.htmlContent = l.value;
+      x.innerHTML = l.value;
+      l.parentNode.appendChild(x);
+      l.setAttribute('id', '');
+      l.setAttribute('name', '');
+      l.setAttribute('readonly', 'True');
+    });
 
     const htmlContent = clone.innerHTML;
     document.getElementById('html_content').value = htmlContent;
@@ -30,6 +49,8 @@ function submitForm() {
       question_inputContainer.classList.add('add-container', 'd-flex', 'mb-2');
       const questionInput = document.createElement('input');
       questionInput.placeholder = 'Enter question ' + questionCount;
+      questionInput.id = 'question-' + questionCount;
+      questionInput.setAttribute('name', 'answer-input-' + questionCount);
       questionInput.classList.add('form-control','question');
       questionInput.type = 'text';
       question_inputContainer.appendChild(questionInput);
@@ -48,7 +69,7 @@ function submitForm() {
       addAnswerContainer.classList.add('add-container', 'd-flex', 'mb-2');
 
       const typeSelect = document.createElement('select');
-      typeSelect.classList.add('form-control');
+      typeSelect.classList.add('form-control', 'type-select');
       typeSelect.innerHTML = `
           <option value="checkbox">Checkbox</option>
           <option value="radio">Radio</option>
@@ -82,21 +103,16 @@ function submitForm() {
       answerInput.type = type;
       answerInput.placeholder = 'Enter answer';
       answerInput.classList.add('form-control');
-      answerInput.id = 'answer-input'+answerCount;
+      answerInput.id = 'id_answer-input-'+answerCount;
+      answerInput.name = 'answer-input-' + questionCount;
       answerContainer.appendChild(answerInput);
-
-      if (type === 'radio' || type === 'checkbox') {
-          const name = 'question' + (questionCount + 1); // Avoid using 0-based index
-          answerInput.name = name;
-      }
-
       const actionsContainer = document.createElement('div');
       actionsContainer.classList.add('actions');
-
       
       if (type !== 'text') {
           const label = document.createElement('label');
           label.textContent = 'Label';
+          label.id = 'editLabelButton'+answerCount;
           answerContainer.appendChild(label);
           const editLabelButton = document.createElement('button');
           editLabelButton.textContent = 'Edit Label';
@@ -104,9 +120,10 @@ function submitForm() {
           editLabelButton.type = 'button';
           editLabelButton.id = 'editLabelButton'+answerCount;
           actionsContainer.appendChild(editLabelButton);
-          editLabelButton.onclick = function() {
-              editLabel(answerInput, label);
-          };
+          editLabelButton.onclick = editLabel;
+          questionController[editLabelButton.id] = {}
+          questionController[editLabelButton.id]['question'] = answerInput
+          questionController[editLabelButton.id]['label'] = label
         }
         
       const removeAnswerButton = document.createElement('button');
@@ -123,38 +140,23 @@ function submitForm() {
       questionContainer.appendChild(answerContainer);
   }
 
-  function editLabel(answerInput, label) {
-
-      if (!label) return;
-
-      const currentLabel = label.textContent;
+  function editLabel() {
+      const currentLabel = this.textContent;
       $('#newLabelInput').val(currentLabel);
+      $('#uptodateLabelInput').val(this.id);
       $('#editModal').modal('show');
 
       $('#editModal').on('hidden.bs.modal', function () {
           const newLabel = $('#newLabelInput').val().trim();
           if (newLabel !== '') {
-              label.textContent = newLabel;
-              updateInputValues(answerInput, newLabel);
+            id = $('#uptodateLabelInput').val();
+            questionController[id]['label'].textContent = newLabel;
+            questionController[id]['question'].value = newLabel;
           }
       });
   }
 
-  function updateInputValues(answerInput, newValue) {
-    //   const inputs = answerContainer.querySelectorAll('input[type="checkbox"], input[type="radio"]');
-    //   inputs.forEach(input => {
-    //       input.value = newValue;
-    //   });
-    answerInput.value = newValue;
-  }
-// label = ""
+
   function updateLabel() {
-    //   const newValue = document.getElementById('newLabelInput').value;
-    //   if (newValue.trim() !== '') {
-    //       const label = document.querySelector('.answer-container label');
-    //       label.textContent = newValue;
-    //       $('#editModal').modal('hide');
-    //       updateInputValues(label.parentElement, newValue);
-    //     }
     $('#editModal').modal('hide');
   }

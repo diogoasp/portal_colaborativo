@@ -4,16 +4,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
 from django.urls import reverse_lazy
-from .models import Projeto, Interacao, Gerente
+from .models import Pergunta, Projeto, Interacao, Gerente, Resposta, Stakeholder
 from .forms import ProjetoForm, InteracaoForm
 
 class HomeView(ListView):
     template = 'home.html'
     def get(self,request):
-        gerente = Gerente.objects.get(usuario=self.request.user)
+        try:
+            usuario = Gerente.objects.get(usuario=self.request.user)
+            projetos = Projeto.objects.filter(gerente=usuario)
+            interacoes = Interacao.objects.filter(estaAtiva=True, projeto__gerente=usuario)
+        except Gerente.DoesNotExist:
+            usuario = Stakeholder.objects.get(usuario=self.request.user)
+            projetos = Projeto.objects.filter(stakeholders=usuario)
+            interacoes = Interacao.objects.filter(estaAtiva=True, projeto__stakeholders=usuario)
 
-        projetos = Projeto.objects.filter(gerente=gerente)
-        interacoes = Interacao.objects.filter(estaAtiva=True, projeto__gerente=gerente)
 
         return render(request,'home.html',{'projetos':projetos, 'interacoes':interacoes})
 
@@ -72,6 +77,30 @@ class ProjetoUpdateView(UpdateView):
 class InteracaoView(TemplateView):
     form = 'interacao/interacao_form.html'
     def get(self,request):
-        print("interação view")
         interacao = InteracaoForm()
         return render(request, self.form, {'form': interacao})
+    
+    def post(self, request):
+        interacao = InteracaoForm(request.POST)
+        interacao.save()
+        return redirect('home')
+
+class ResponderInteracaoView(TemplateView):
+    form = 'interacao/responder_interacao_form.html'
+    def get(self, request, pk):
+        interacao = get_object_or_404(Interacao, pk=pk)
+        return render(request, self.form, {'form': interacao.formulario, 'pk':pk})
+    
+    def post(self, request, pk):
+        interacao = Interacao.objects.get(pk=pk)
+        stakeholder = Stakeholder.objects.get(usuario=self.request.user)
+        pergunta = None
+        resposta = []
+        for key,value in request.POST.items():
+            print(key,value)
+            if key.split('-')[0] == 'question':
+                pergunta = Pergunta.objects.create(pergunta=value)
+            elif key.split('-')[0] == 'answer':
+                resposta.append(Resposta.objects.create(interacao=interacao, pergunta=pergunta, stakeholder=stakeholder, resposta=value))
+
+        return render(request, 'interacao/test.html', {'data': resposta})

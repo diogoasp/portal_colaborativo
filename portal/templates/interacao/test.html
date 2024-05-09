@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>Respostas de {{ d.stakeholder.nome }}</h3>
+    <h4>Projeto {{ d.interacao.projeto.nome }}</h4>
+    <br>
+    {% for d in data %}
+    <br>
+    {{ d.pergunta.pergunta}} -> {{ d.resposta }}
+    <br>
+    
+    {% endfor %}
+
+
+{% endblock %}

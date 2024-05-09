@@ -6,14 +6,14 @@
     <h2>Projetos</h2>
     <a href="{% url 'novo_projeto' %}">Criar projeto</a>
     {% for projeto in projetos %}
-    <li>{{ projeto.nome }}</li>
+    <li> <a href="#"">{{ projeto.nome }}</a> </li>
     {% endfor %}
   </ul>
   <ul>
     <h2>Interações</h2>
     <a href="{% url 'nova_interacao' %}">Criar Interação</a>
     {% for interacao in interacoes %}
-    <li>{{ interacao.nome }}</li>
+    <li> <a href="{% url 'responder_interacao' interacao.id %}">{{ interacao.nome }}</a> </li>
     {% endfor %}
   </ul>
 </div>

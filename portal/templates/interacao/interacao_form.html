@@ -11,7 +11,7 @@
   <form method="post" action="{% url 'nova_interacao' %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="hidden" name="html_content" id="html_content">
+    <!-- <input type="hidden" name="html_content" id="html_content"> -->
     <div id="form-container">
         <button type="button" onclick="addQuestion()" class="btn btn-primary mb-2">Add Question</button>
         <div id="dynamic-form">

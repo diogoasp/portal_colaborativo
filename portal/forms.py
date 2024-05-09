@@ -13,5 +13,9 @@ class ProjetoForm(forms.ModelForm):
 class InteracaoForm(forms.ModelForm):
     class Meta:
         model = Interacao
-        fields = ['projeto','descricao','nome', 'estaAtiva']
+        fields = ['projeto','descricao','nome', 'estaAtiva', 'formulario']
+    def __init__(self, *args, **kwargs):
+        super(InteracaoForm, self).__init__(*args, **kwargs)
+        self.fields['formulario'].widget = forms.HiddenInput(attrs={'id':'html_content'})
+
 
