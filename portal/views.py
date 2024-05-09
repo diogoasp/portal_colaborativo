@@ -20,17 +20,23 @@ class HomeView(ListView):
             interacoes = Interacao.objects.filter(estaAtiva=True, projeto__stakeholders=usuario)
 
 
-        return render(request,'home.html',{'projetos':projetos, 'interacoes':interacoes})
+        return render(request,'home.html',{'projetos':projetos, 'interacoes':interacoes, 'role':usuario})
 
 # FBV para listar projetos
-def lista_projetos(request):
-    projetos = Projeto.objects.all()
-    return render(request, 'projeto/lista_projetos.html', {'projetos': projetos})
+class ProjetosView(ListView):
+    template = 'projeto/lista_projetos.html'
+    def get(self,request):
+        try:
+            usuario = Gerente.objects.get(usuario=self.request.user)
+        except Gerente.DoesNotExist:
+            usuario = Stakeholder.objects.get(usuario=self.request.user)
+        projetos = Projeto.objects.all()
+        return render(request, self.template, {'projetos': projetos, 'user':usuario})
 
 # CBV para detalhes do projeto
 class ProjetoDetailView(DetailView):
     model = Projeto
-    template_name = 'projeto/detalhes_projeto.html'
+    template_name = 'projeto/visualizar_projeto.html'
     context_object_name = 'projeto'
 
 # Modifique a FBV para criar feedback para exigir login
