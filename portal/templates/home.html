@@ -1,21 +1,15 @@
 {% extends "base.html" %}
+
 {% load filter %}
 {% block content %}
-<div class="container w-100 d-flex-centered">
-  <ul>
-    <h2>Projetos</h2>
-    <h2>{{role|classname}}</h2>
-    <a href="{% url 'novo_projeto' %}">Criar projeto</a>
-    {% for projeto in projetos %}
-    <li> <a href="#">{{ projeto.nome }}</a> </li>
-    {% endfor %}
-  </ul>
-  <ul>
-    <h2>Interações</h2>
-    <a href="{% url 'nova_interacao' %}">Criar Interação</a>
-    {% for interacao in interacoes %}
-    <li> <a href="{% url 'responder_interacao' interacao.id %}">{{ interacao.nome }}</a> </li>
-    {% endfor %}
-  </ul>
+
+<div class="d-flex flex-row">
+  <div class="w-75">
+    {% include  'components/lista_interacoes_component.html' with role=usuario|classname  %}
+  </div>
+  <div class="w-25" style="border-left: 1px solid black; padding-left: 1%;">
+    {% include  'components/lista_projetos_component.html' with role=usuario|classname %}
+  </div>
 </div>
+
 {% endblock %}

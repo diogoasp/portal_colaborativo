@@ -7,23 +7,41 @@ from django.urls import reverse_lazy
 from .models import Pergunta, Projeto, Interacao, Gerente, Resposta, Stakeholder
 from .forms import ProjetoForm, InteracaoForm
 
+class UserController():
+    @classmethod
+    def get_user(self, user):
+        try:
+            usuario = Gerente.objects.get(usuario=user)
+        except Gerente.DoesNotExist:
+            usuario = Stakeholder.objects.get(usuario=user)
+        return usuario
+    @classmethod
+    def get_projects(self, user):
+        print(user.__class__.__name__ )
+        if user.__class__.__name__ == 'Stakeholder':
+            projetos = Projeto.objects.filter(stakeholders=user)
+        else:
+            projetos = Projeto.objects.filter(gerente=user)
+        return projetos
+    @classmethod
+    def get_interacoes(self, user):
+        if user.__class__.__name__ == 'Stakeholder':
+            interacoes = Interacao.objects.filter(estaAtiva=True, projeto__stakeholders=user)
+        else:
+            interacoes = Interacao.objects.filter(estaAtiva=True, projeto__gerente=user)
+        return interacoes
+    
 class HomeView(ListView):
     template = 'home.html'
     def get(self,request):
-        try:
-            usuario = Gerente.objects.get(usuario=self.request.user)
-            projetos = Projeto.objects.filter(gerente=usuario)
-            interacoes = Interacao.objects.filter(estaAtiva=True, projeto__gerente=usuario)
-        except Gerente.DoesNotExist:
-            usuario = Stakeholder.objects.get(usuario=self.request.user)
-            projetos = Projeto.objects.filter(stakeholders=usuario)
-            interacoes = Interacao.objects.filter(estaAtiva=True, projeto__stakeholders=usuario)
+        usuario = UserController.get_user(self.request.user)
+        projetos = UserController.get_projects(usuario)
+        interacoes = UserController.get_interacoes(usuario)
 
-
-        return render(request,'home.html',{'projetos':projetos, 'interacoes':interacoes, 'role':usuario})
+        return render(request,'home.html',{'projetos':projetos, 'interacoes':interacoes, 'usuario':usuario})
 
 # FBV para listar projetos
-class ProjetosView(ListView):
+class ProjetosView(LoginRequiredMixin,ListView):
     template = 'projeto/lista_projetos.html'
     def get(self,request):
         try:
@@ -31,7 +49,7 @@ class ProjetosView(ListView):
         except Gerente.DoesNotExist:
             usuario = Stakeholder.objects.get(usuario=self.request.user)
         projetos = Projeto.objects.all()
-        return render(request, self.template, {'projetos': projetos, 'user':usuario})
+        return render(request, self.template, {'projetos': projetos, 'usuario':usuario})
 
 # CBV para detalhes do projeto
 class ProjetoDetailView(DetailView):

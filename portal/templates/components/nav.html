@@ -1,0 +1,26 @@
+<nav class="navbar navbar-inverse navbar-dark bg-dark">
+  <div class="navbar-header mx-4">
+    <a class="navbar-brand" href="#">Portal Colaborativo de Gestão</a>
+  </div>
+    <ul class="navbar-nav mr-auto flex-row d-flex-centered">
+      <li class="nav-item active mx-2">
+        <a class="nav-link" href="{% url 'home' %}">Home</a>
+      </li>
+      <li class="nav-item mx-2">
+        <a class="nav-link" href="{% url 'lista_projetos' %}">Projetos</a>
+      </li>
+      <li class="nav-item mx-2">
+        <a class="nav-link" href="{% url 'lista_interacoes' %}">Interações</a>
+      </li>
+    </ul>
+  <ul class="nav navbar-nav navbar-right mx-4 text-white">
+    {% if user.is_authenticated  %}
+      <li>Olá, {{usuario.nome}}</li>
+      <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span> Sair</a></li>
+    {% else %}
+      <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> -->
+      <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    {% endif %}
+  </ul>
+  
+</nav>

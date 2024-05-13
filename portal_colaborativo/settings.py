@@ -17,7 +17,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 LOGIN_REDIRECT_URL = 'home'
-
+LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'login'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 

@@ -1,6 +1,6 @@
-<h2>Interações</h2>
-<ul>
-    {% for interacao in interacoes %}
-    <li>{{ interacao.descricao }}</li>
-    {% endfor %}
-</ul>
+{% extends "base.html" %}
+{% load filter %}
+
+{% block content %}
+{% include  'components/lista_interacoes_component.html' %}
+{% endblock %}
