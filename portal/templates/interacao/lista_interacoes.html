@@ -2,5 +2,7 @@
 {% load filter %}
 
 {% block content %}
-{% include  'components/lista_interacoes_component.html' %}
+<div class="lista w-100">
+    {% include 'components/lista_interacoes_component.html' with role=usuario|classname  %}
+</div>
 {% endblock %}

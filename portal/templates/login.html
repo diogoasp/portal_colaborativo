@@ -1,9 +1,13 @@
 {% extends "base.html" %}
+{% load static %}
 {% block nav %}
 {% endblock %}
 {% block content %}
 
     <div class="container login-container">
+        <div class="container" style="width: 40%;margin: 0;">
+            <img style="width:100%" src="{% static 'logo.png' %}" alt="" srcset="">
+        </div>
         <form class="login-form" method="post">
             {% csrf_token %}
             <h4 class="mb-3 text-center">Login</h4>

@@ -3,13 +3,18 @@
 {% load filter %}
 {% block content %}
 
-<div class="d-flex flex-row">
-  <div class="w-75">
-    {% include  'components/lista_interacoes_component.html' with role=usuario|classname  %}
+  <div class="d-flex flex-row mb-5">
+    <div class="w-75">
+      {% include 'components/lista_interacoes_component.html' with role=usuario|classname  %}
+    </div>
+    <div class="base w-25" style="border-left: 1px solid black; padding-left: 1%;">
+      {% include 'components/lista_projetos_component.html' with role=usuario|classname %}
+      {% if more %}
+      <div class="container text-center">
+        <a class="w-100 text-center" href="{% url 'lista_projetos' %}">Ver mais</a>
+      </div>
+      {% endif %}
+    </div>
   </div>
-  <div class="w-25" style="border-left: 1px solid black; padding-left: 1%;">
-    {% include  'components/lista_projetos_component.html' with role=usuario|classname %}
-  </div>
-</div>
 
 {% endblock %}

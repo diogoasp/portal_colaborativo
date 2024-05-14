@@ -1,12 +1,20 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+html{
+    height: -webkit-fill-available;
+}
 body {
     background-color: #f4f4f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 .login-container {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
 }
 .login-form {
     width: 100%;
@@ -52,7 +60,7 @@ body {
     width: 20%;
     text-align-last: end;
 }
-.add-container select, input {
+.add-container select, .add-container input {
     width: 84% !important;
     margin-right: 2% !important;
 }
@@ -66,4 +74,28 @@ body {
 }
 .top-buffer {
     margin-top: 20px;
+}
+
+.base .top-buffer{
+    width: 90% !important;
+    max-width: 90%;
+    MIN-WIDTH: 90%;
+    margin: 0 auto;
+}
+
+.base .card{
+    margin: 1% auto;
+}
+
+.lista .card{
+    margin: 1%;
+    width: 30%;
+}
+
+.lista .top-buffer{
+    display: inline-flex;
+    flex-wrap: wrap;
+    width: 90%;
+    align-content: center;
+    align-items: center;
 }

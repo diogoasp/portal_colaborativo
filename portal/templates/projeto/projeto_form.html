@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>{% if object %}Editar{% else %}Novo{% endif %} Projeto</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Salvar</button>
-  </form>
+  <h2 class="h2 w-100 text-center">{% if object %}Editar{% else %}Novo{% endif %} Projeto</h2>
+  <div class="container">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-success w-100 my-2" type="submit">Salvar</button>
+    </form>
+  </div>
 {% endblock %}

@@ -1,6 +1,4 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
 from django.urls import reverse_lazy
@@ -37,66 +35,47 @@ class HomeView(ListView):
         usuario = UserController.get_user(self.request.user)
         projetos = UserController.get_projects(usuario)
         interacoes = UserController.get_interacoes(usuario)
+        context = {'projetos':projetos[0:5], 'interacoes':interacoes, 'usuario':usuario}
+        if len(projetos) > 5:
+            context['more'] = True
+        return render(request,'home.html',context)
 
-        return render(request,'home.html',{'projetos':projetos, 'interacoes':interacoes, 'usuario':usuario})
-
-# FBV para listar projetos
 class ProjetosView(LoginRequiredMixin,ListView):
     template = 'projeto/lista_projetos.html'
     def get(self,request):
-        try:
-            usuario = Gerente.objects.get(usuario=self.request.user)
-        except Gerente.DoesNotExist:
-            usuario = Stakeholder.objects.get(usuario=self.request.user)
-        projetos = Projeto.objects.all()
+        usuario = UserController.get_user(self.request.user)
+        projetos = UserController.get_projects(usuario)
         return render(request, self.template, {'projetos': projetos, 'usuario':usuario})
 
-# CBV para detalhes do projeto
-class ProjetoDetailView(DetailView):
+class ProjetoDetailView(LoginRequiredMixin,DetailView):
     model = Projeto
     template_name = 'projeto/visualizar_projeto.html'
     context_object_name = 'projeto'
 
-# Modifique a FBV para criar feedback para exigir login
-# @login_required
-# def criar_feedback(request, pk):
-#     projeto = get_object_or_404(Projeto, pk=pk)
-#     if request.method == 'POST':
-#         form = FeedbackForm(request.POST)
-#         if form.is_valid():
-#             feedback = form.save(commit=False)
-#             feedback.projeto = projeto
-#             feedback.autor = request.user.stakeholder  # Assumindo que o usuário tem um perfil de stakeholder relacionado
-#             feedback.save()
-#             return redirect(projeto.get_absolute_url())  # Redireciona para a página de detalhes do projeto
-#     else:
-#         form = FeedbackForm()
-#     return render(request, 'feedbacks/criar_feedback.html', {'form': form, 'projeto': projeto})
-
-# Modifique a CBV para listar interações para exigir login
-class InteracaoListView(LoginRequiredMixin, ListView):
+class InteracaoListView(LoginRequiredMixin, TemplateView):
     model = Interacao
     template_name = 'interacao/lista_interacoes.html'
-    context_object_name = 'interacoes'
 
-    def get_queryset(self):
-        # Filtra as interações pelo projeto, se um 'projeto_id' for fornecido
-        projeto_id = self.kwargs.get('projeto_id')
+    def get(self, request, projeto_id=None):
+        usuario = UserController.get_user(self.request.user)
+        context = {'usuario': usuario}
         if projeto_id:
-            return Interacao.objects.filter(projeto__id=projeto_id)
-        return Interacao.objects.all()
-    
+            context['interacoes'] = Interacao.objects.filter(projeto__id=projeto_id)
+        else:
+            context['interacoes'] = UserController.get_interacoes(usuario)
+        return render(request, self.template_name, context)
+
 class ProjetoCreateView(CreateView):
     model = Projeto
     form_class = ProjetoForm
     template_name = 'projeto/projeto_form.html'
-    success_url = reverse_lazy('lista_projetos')  # Substitua 'lista_projetos' pela URL de destino após a criação
+    success_url = reverse_lazy('lista_projetos')
 
 class ProjetoUpdateView(UpdateView):
     model = Projeto
     form_class = ProjetoForm
     template_name = 'projeto/projeto_form.html'
-    success_url = reverse_lazy('lista_projetos')  # Substitua 'lista_projetos' pela URL de destino após a edição
+    success_url = reverse_lazy('lista_projetos')
 
 class InteracaoView(TemplateView):
     form = 'interacao/interacao_form.html'

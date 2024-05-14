@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         {% for interacao in interacoes %}
-        <div class="col-md-4 top-buffer">
+        <div class="top-buffer">
             <a class="card project-card" href="{% url 'responder_interacao' interacao.pk %}">
                 <div class="card-body">
                     <h5 class="card-title">{{interacao.nome}}</h5>

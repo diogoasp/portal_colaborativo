@@ -10,6 +10,9 @@ class ProjetoForm(forms.ModelForm):
         self.fields['data_inicio'].widget = forms.DateInput(attrs={'format':"dd/MM/yyyy", 'type': 'date'})
         self.fields['data_fim'].widget = forms.DateInput(attrs={'format':"dd/MM/yyyy", 'type': 'date'})
 
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 class InteracaoForm(forms.ModelForm):
     class Meta:
         model = Interacao
@@ -17,5 +20,7 @@ class InteracaoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(InteracaoForm, self).__init__(*args, **kwargs)
         self.fields['formulario'].widget = forms.HiddenInput(attrs={'id':'html_content'})
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 

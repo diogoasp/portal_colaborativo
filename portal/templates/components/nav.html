@@ -1,5 +1,7 @@
+{% load static %}
 <nav class="navbar navbar-inverse navbar-dark bg-dark">
   <div class="navbar-header mx-4">
+    <img style="width: 5%;margin-right: 2%;" src="{% static 'logo_1.png' %}" alt="" srcset="">
     <a class="navbar-brand" href="#">Portal Colaborativo de Gestão</a>
   </div>
     <ul class="navbar-nav mr-auto flex-row d-flex-centered">
@@ -13,10 +15,10 @@
         <a class="nav-link" href="{% url 'lista_interacoes' %}">Interações</a>
       </li>
     </ul>
-  <ul class="nav navbar-nav navbar-right mx-4 text-white">
+  <ul class="nav navbar-nav navbar-right mx-4 text-white d-flex flex-row">
     {% if user.is_authenticated  %}
-      <li>Olá, {{usuario.nome}}</li>
-      <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span> Sair</a></li>
+      <li class="mx-2" style="align-content: center;">Olá, {{usuario.nome}}</li>
+      <li><a href="{% url 'logout' %}" class="btn btn-danger">Sair</a></li>
     {% else %}
       <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> -->
       <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

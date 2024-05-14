@@ -1,52 +1,49 @@
 {% extends "base.html" %}
 {% load static %}
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-
-
 {% block content %}
-  <h2>{% if object %}Editar{% else %}Nova{% endif %} Interação</h2>
-
-  <form method="post" action="{% url 'nova_interacao' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <!-- <input type="hidden" name="html_content" id="html_content"> -->
-    <div id="form-container">
-        <button type="button" onclick="addQuestion()" class="btn btn-primary mb-2">Add Question</button>
-        <div id="dynamic-form">
-            <!-- Questions will be added here -->
-        </div>
+<h2 class="h2 w-100 text-center">{% if object %}Editar{% else %}Nova{% endif %} Interação</h2>
+<div class="container">
+        <form method="post" action="{% url 'nova_interacao' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <!-- <input type="hidden" name="html_content" id="html_content"> -->
+            <div id="form-container">
+                <button type="button" onclick="addQuestion()" class="btn btn-primary mb-2">Add Question</button>
+                <div id="dynamic-form">
+                    <!-- Questions will be added here -->
+                </div>
+            </div>
+            <button type="button" onclick="submitForm()" class="btn btn-success">Submit Form</button>
+        </form>
     </div>
-    <button type="button" onclick="submitForm()" class="btn btn-success">Submit Form</button>
-</form>
 <!-- Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Label</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="uptodateLabelInput" class="form-control" placeholder="Enter new label">
-                <input type="hidden" id="uptodateInput" class="form-control" placeholder="Enter new label">
-                <input type="text" id="newLabelInput" class="form-control" placeholder="Enter new label">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="updateLabel()">Save changes</button>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Label</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="uptodateLabelInput" class="form-control" placeholder="Enter new label">
+                    <input type="hidden" id="uptodateInput" class="form-control" placeholder="Enter new label">
+                    <input type="text" id="newLabelInput" class="form-control" placeholder="Enter new label">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="updateLabel()">Save changes</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-
-<script src="{% static 'interacao_create.js' %}"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-{% endblock %}
+    {% endblock %}
+    {% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'interacao_create.js' %}"></script>
+    {% endblock %}
