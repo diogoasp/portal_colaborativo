@@ -6,14 +6,16 @@
         <a href="{% url 'nova_interacao' %}" class="btn btn-primary"><i class="bi bi-plus"></i></a>
         {% endif %}
     </div>
-    <div class="row">
+    <div class="row" style="justify-content: space-evenly;">
         {% for interacao in interacoes %}
-        <div class="top-buffer">
+        <div class="top-buffer" style="width: 30%; margin:0">
             <a class="card project-card" href="{% url 'responder_interacao' interacao.pk %}">
                 <div class="card-body">
                     <h5 class="card-title">{{interacao.nome}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Gerente: {{interacao.projeto.gerente.nome}}</h6>
-                    <p class="card-text">Stakeholders: {{interacao.projeto.stakeholders.count}} </p>
+                    <h6 class="card-subtitle mb-2 text-muted">{{interacao.projeto.nome}}</h6>
+                    <p class="card-text  text-muted">Gerente: {{interacao.projeto.gerente.nome}}</p>
+                    <p class="card-text">{{interacao.descricao}} </p>
+                    <p class="card-text">{{interacao.data_criacao}} </p>
                 </div>
             </a>
         </div>

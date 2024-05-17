@@ -1,32 +1,19 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Projeto</title>
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f4f4f9;
-        }
-        .btn-remove {
-            color: red;
-            cursor: pointer;
-        }
-        .content-section {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
+{% load filter %}
+
+{% block content %}
     <div class="container py-4">
+    <div class="row d-flex flex-row justify-content-between">
         <h2>{{ projeto.nome }}</h2>
+        <a href="{% url 'editar_projeto' projeto.pk %}" class="btn btn-success mb-4">Editar Projeto</a>
+    </div>
         <p>Gerente: {{ projeto.gerente.nome }}</p>
-        <button class="btn btn-success mb-4">Editar Projeto</button>
+        <p>{{ projeto.descricao }}</p>
+        <p>De {{ projeto.data_inicio }} à {{ projeto.data_fim }}</p>
 
         <div class="content-section">
             <h4>Stakeholders</h4>
+            {% if projeto.stakeholders.all|length > 0 %}
             <ul id="stakeholderList" class="list-group mb-3">
                 {% for stakeholder in projeto.stakeholders.all %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -34,15 +21,12 @@
                     <span class="btn-remove" onclick="removeStakeholder(this);">&#x2716;</span>
                 </li>
                 {% endfor %}
-                <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Organização Y
-                    <span class="btn-remove" onclick="removeStakeholder(this);">&#x2716;</span>
-                </li> -->
             </ul>
+            {% endif %}
             <button class="btn btn-primary" onclick="addStakeholder();">Adicionar Stakeholder</button>
         </div>
 
-        <div class="content-section">
+        <div class="content-section mt-4">
             <h4>Etapas do Projeto</h4>
             <div>
                 <button class="btn btn-primary mb-2" onclick="toggleCollapse('collapseStepContainer');">Ver/Ocultar Etapas</button>
@@ -112,5 +96,4 @@
             });
         }
     </script>
-</body>
-</html>
+{% endblock %}

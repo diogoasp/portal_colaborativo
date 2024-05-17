@@ -107,3 +107,7 @@ class ResponderInteracaoView(TemplateView):
                 resposta.append(Resposta.objects.create(interacao=interacao, pergunta=pergunta, stakeholder=stakeholder, resposta=value))
 
         return render(request, 'interacao/test.html', {'data': resposta})
+
+class ConstrucaoView(TemplateView):
+    def get(self, request):
+        return render(request, 'em_construcao.html')

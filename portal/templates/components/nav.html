@@ -1,12 +1,12 @@
 {% load static %}
 <nav class="navbar navbar-inverse navbar-dark bg-dark">
-  <div class="navbar-header mx-4">
+  <div class="navbar-header" style="width:33%">
     <img style="width: 5%;margin-right: 2%;" src="{% static 'logo_1.png' %}" alt="" srcset="">
     <a class="navbar-brand" href="#">Portal Colaborativo de Gestão</a>
   </div>
-    <ul class="navbar-nav mr-auto flex-row d-flex-centered">
+    <ul class="navbar-nav mx-auto flex-row d-flex-centered">
       <li class="nav-item active mx-2">
-        <a class="nav-link" href="{% url 'home' %}">Home</a>
+        <a class="nav-link" href="{% url 'home' %}">Início</a>
       </li>
       <li class="nav-item mx-2">
         <a class="nav-link" href="{% url 'lista_projetos' %}">Projetos</a>
@@ -14,8 +14,14 @@
       <li class="nav-item mx-2">
         <a class="nav-link" href="{% url 'lista_interacoes' %}">Interações</a>
       </li>
+      <li class="nav-item mx-2">
+        <a class="nav-link" href="{% url '404' %}">Sobre</a>
+      </li>
+      <li class="nav-item mx-2">
+        <a class="nav-link" href="{% url '404' %}">Contato</a>
+      </li>
     </ul>
-  <ul class="nav navbar-nav navbar-right mx-4 text-white d-flex flex-row">
+  <ul class="nav navbar-nav navbar-right text-white d-flex flex-row" style="width:33%; justify-content:end">
     {% if user.is_authenticated  %}
       <li class="mx-2" style="align-content: center;">Olá, {{usuario.nome}}</li>
       <li><a href="{% url 'logout' %}" class="btn btn-danger">Sair</a></li>
