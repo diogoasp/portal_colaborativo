@@ -23,4 +23,7 @@ class InteracaoForm(forms.ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-
+class UserCreateForm(forms.ModelForm):
+    class Meta:
+        model = Stakeholder
+        fields = '__all__'

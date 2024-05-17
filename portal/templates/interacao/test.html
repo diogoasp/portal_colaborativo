@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h3>Respostas de {{ d.stakeholder.nome }}</h3>
-    <h4>Projeto {{ d.interacao.projeto.nome }}</h4>
+<div class="container mt-4">
+  <h2 class="h2 w-100 text-center">{{interacao.nome}}</h2>
+  <p class="w-100 text-center">{{interacao.descricao}}</p>
+  <p class="w-100 text-center">{{interacao.projeto.nome}}</p>
+    <h3>Respostas de {{ stakeholder.nome }}</h3>
     <br>
     {% for d in data %}
     <br>
     {{ d.pergunta.pergunta}} -> {{ d.resposta }}
     <br>
-    
     {% endfor %}
-
-
+    <a href="{% url 'home' %}" class="btn btn-primary mt-2">Retornar para o Início</a>
+</div>
 {% endblock %}

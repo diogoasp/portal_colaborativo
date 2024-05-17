@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
 from django.urls import reverse_lazy
 from .models import Pergunta, Projeto, Interacao, Gerente, Resposta, Stakeholder
-from .forms import ProjetoForm, InteracaoForm
+from .forms import ProjetoForm, InteracaoForm, UserCreateForm
 
 class UserController():
     @classmethod
@@ -92,7 +93,7 @@ class ResponderInteracaoView(TemplateView):
     form = 'interacao/responder_interacao_form.html'
     def get(self, request, pk):
         interacao = get_object_or_404(Interacao, pk=pk)
-        return render(request, self.form, {'form': interacao.formulario, 'pk':pk})
+        return render(request, self.form, {'interacao':interacao, 'form': interacao.formulario, 'pk':pk})
     
     def post(self, request, pk):
         interacao = Interacao.objects.get(pk=pk)
@@ -106,8 +107,25 @@ class ResponderInteracaoView(TemplateView):
             elif key.split('-')[0] == 'answer':
                 resposta.append(Resposta.objects.create(interacao=interacao, pergunta=pergunta, stakeholder=stakeholder, resposta=value))
 
-        return render(request, 'interacao/test.html', {'data': resposta})
+        return render(request, 'interacao/test.html', {'stakeholder':stakeholder, 'interacao': interacao, 'data': resposta})
 
 class ConstrucaoView(TemplateView):
     def get(self, request):
         return render(request, 'em_construcao.html')
+    
+class UserCreateView(TemplateView):
+    def get(self, request):
+        usuario = UserCreateForm()
+        print(usuario['projetos'])
+        return render(request, 'usuario/cadastro_usuario.html', {'form': usuario})
+    
+    def post(self, request):
+        usuario = UserCreateForm(request.POST)
+        if usuario.is_valid():
+            user = User.objects.create_user(username='john',
+                                 email='jlennon@beatles.com',
+                                 password='glass onion')
+            usuario.save()
+            return redirect('home')
+        else:
+            return render(request, 'usuario/create_user_form.html', {'form': usuario})

@@ -8,12 +8,12 @@
             {{ form.as_p }}
             <!-- <input type="hidden" name="html_content" id="html_content"> -->
             <div id="form-container">
-                <button type="button" onclick="addQuestion()" class="btn btn-primary mb-2">Add Question</button>
+                <button type="button" onclick="addQuestion()" class="btn btn-primary mb-2">Adicionar Questão</button>
                 <div id="dynamic-form">
                     <!-- Questions will be added here -->
                 </div>
             </div>
-            <button type="button" onclick="submitForm()" class="btn btn-success">Submit Form</button>
+            <button type="button" onclick="submitForm()" class="btn btn-success">Enviar</button>
         </form>
     </div>
 <!-- Modal -->
@@ -21,7 +21,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Label</h5>
+                    <h5 class="modal-title" id="editModalLabel">Editar Resposta</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="updateLabel()">Save changes</button>
+                    <button type="button" class="btn btn-primary" onclick="updateLabel()">Salvar Aterações</button>
                 </div>
             </div>
         </div>

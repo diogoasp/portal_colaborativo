@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <div class="container">
+      <form method="post" action="{% url 'criar_usuario' %}">
+        {{form.as_div}}
+          <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">Enviar</button>
+          </div>
+      </form>
+    </div>
+{% endblock %}

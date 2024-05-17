@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container registration-container">
+    <form class="registration-form" action="#!" method="post">
+        <h4 class="mb-3 text-center">Cadastro de Usuários</h4>
+        <!-- Campo de nome -->
+        <div class="mb-3">
+            <label for="username" class="form-label">Nome de usuário</label>
+            <input type="text" class="form-control" id="nome" placeholder="Digite seu nome de usuário" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Senha</label>
+            <input type="password" class="form-control" id="nome" placeholder="Digite sua senha" required>
+        </div>
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="nome" placeholder="Digite seu nome completo" required>
+        </div>
+        <!-- Campo de CPF -->
+        <div class="mb-3">
+            <label for="cpf" class="form-label">CPF</label>
+            <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF" required>
+        </div>
+        <!-- Campo de data de nascimento -->
+        <div class="mb-3">
+            <label for="{{ form.dt_nascimento.id }}" class="form-label">Data de Nascimento</label>
+            <input type="date" class="form-control" id="{{ form.dt_nascimento.id }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.contato.id }}" class="form-label">Contato</label>
+            <input type="text" class="form-control" id="{{ form.contato.id }}" required>
+        </div>
+        <div class="mb-3">
+            <select for="{{form.projetos.id}}" data-placeholder="Selecionar projetos" multiple="" class="chosen-select" tabindex="4" style="display: none;">
+                {% for projeto in form.projetos %}
+                <option value="{{projeto.pk}}">{{projeto}}</option>
+                {% endfor %}
+            </select>
+
+        </div>
+        <!-- Seleção de tipo de usuário -->
+        <!-- <div class="mb-3">
+                <label class="form-label">Tipo de Usuário</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoUsuario" id="administrador" value="administrador" required>
+                    <label class="form-check-label" for="administrador">Administrador</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoUsuario" id="stakeholder" value="stakeholder">
+                    <label class="form-check-label" for="stakeholder">Stakeholder</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipoUsuario" id="gerenteProjeto" value="gerenteProjeto">
+                    <label class="form-check-label" for="gerenteProjeto">Gerente de Projeto</label>
+                </div>
+            </div> -->
+        <!-- Botão de enviar -->
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block custom_scripts %}
+<script src="{% static 'chosen/chosen.jquery.min.js' %}"></script>
+<script>
+    $(".chosen-select").chosen()
+    $(document).ready(function () {
+        $('#cpf').mask('000.000.000-00', { reverse: true });
+    });
+</script>
+{% endblock %}

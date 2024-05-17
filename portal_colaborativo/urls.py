@@ -18,4 +18,5 @@ urlpatterns = [
     path('interacao/editar/<int:pk>/', views.InteracaoView.as_view(), name='editar_interacao'),
     path('interacao/responder/<int:pk>/', views.ResponderInteracaoView.as_view(), name='responder_interacao'),
     path('404/', views.ConstrucaoView.as_view(), name='404'),
+    path('usuario/criar/', views.UserCreateView.as_view(), name='criar_usuario'),
 ]

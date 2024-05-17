@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<form method="post" action="{% url 'responder_interacao' pk %}">
+  <h2 class="h2 w-100 text-center">{{interacao.nome}}</h2>
+  <p class="w-100 text-center">{{interacao.descricao}}</p>
+<div class="container mt-4">
+    <form method="post" action="{% url 'responder_interacao' pk %}">
     {% csrf_token %}
     {{ form|safe  }}
     <button type="submit" class="btn btn-success">Submit Form</button>
-</form>
-
+    </form>
+</div>
 {% endblock %}

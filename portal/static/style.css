@@ -114,3 +114,20 @@ body {
     align-content: center;
     align-items: center;
 }
+
+.registration-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.registration-form {
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
