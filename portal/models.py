@@ -61,7 +61,7 @@ class Interacao(models.Model):
     descricao = models.TextField()
     data_criacao = models.DateTimeField(auto_now_add=True)
     nome = models.CharField(max_length=255)
-    estaAtiva = models.BooleanField(default=True, null=False, blank=False)
+    estaAtiva = models.BooleanField(default=True, null=False, blank=False, verbose_name="Interação Ativa")
     formulario = models.TextField()
     def __str__(self):
         return f'Interacao em {self.projeto.nome}'

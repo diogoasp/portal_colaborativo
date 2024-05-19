@@ -5,10 +5,12 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, T
 from django.urls import reverse_lazy
 from .models import Pergunta, Projeto, Interacao, Gerente, Resposta, Stakeholder
 from .forms import ProjetoForm, InteracaoForm, UserCreateForm
-
+from django.contrib.auth.models import AnonymousUser
 class UserController():
     @classmethod
     def get_user(self, user):
+        if user is AnonymousUser:
+            return None
         try:
             usuario = Gerente.objects.get(usuario=user)
         except Gerente.DoesNotExist:
@@ -30,7 +32,7 @@ class UserController():
             interacoes = Interacao.objects.filter(estaAtiva=True, projeto__gerente=user)
         return interacoes
     
-class HomeView(ListView):
+class HomeView(LoginRequiredMixin,ListView):
     template = 'home.html'
     def get(self,request):
         usuario = UserController.get_user(self.request.user)
@@ -66,19 +68,19 @@ class InteracaoListView(LoginRequiredMixin, TemplateView):
             context['interacoes'] = UserController.get_interacoes(usuario)
         return render(request, self.template_name, context)
 
-class ProjetoCreateView(CreateView):
+class ProjetoCreateView(LoginRequiredMixin,CreateView):
     model = Projeto
     form_class = ProjetoForm
     template_name = 'projeto/projeto_form.html'
     success_url = reverse_lazy('lista_projetos')
 
-class ProjetoUpdateView(UpdateView):
+class ProjetoUpdateView(LoginRequiredMixin,UpdateView):
     model = Projeto
     form_class = ProjetoForm
     template_name = 'projeto/projeto_form.html'
     success_url = reverse_lazy('lista_projetos')
 
-class InteracaoView(TemplateView):
+class InteracaoView(LoginRequiredMixin,TemplateView):
     form = 'interacao/interacao_form.html'
     def get(self,request):
         interacao = InteracaoForm()
@@ -89,7 +91,7 @@ class InteracaoView(TemplateView):
         interacao.save()
         return redirect('home')
 
-class ResponderInteracaoView(TemplateView):
+class ResponderInteracaoView(LoginRequiredMixin,TemplateView):
     form = 'interacao/responder_interacao_form.html'
     def get(self, request, pk):
         interacao = get_object_or_404(Interacao, pk=pk)

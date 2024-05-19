@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="container registration-container">
-    <form class="registration-form" action="#!" method="post">
+<div class="container registration-container my-2">
+    <form class="registration-form" method="post">
+        {% csrf_token %}
         <h4 class="mb-3 text-center">Cadastro de Usuários</h4>
         <!-- Campo de nome -->
         <div class="mb-3">
@@ -32,6 +33,9 @@
             <input type="text" class="form-control" id="{{ form.contato.id }}" required>
         </div>
         <div class="mb-3">
+            {% for projeto in form.projetos %}
+            <option value="{{projeto.pk}}">{{projeto}}</option>
+            {% endfor %}
             <select for="{{form.projetos.id}}" data-placeholder="Selecionar projetos" multiple="" class="chosen-select" tabindex="4" style="display: none;">
                 {% for projeto in form.projetos %}
                 <option value="{{projeto.pk}}">{{projeto}}</option>
@@ -63,10 +67,10 @@
 </div>
 {% endblock %}
 {% block custom_scripts %}
-<script src="{% static 'chosen/chosen.jquery.min.js' %}"></script>
+<script src="{% static 'chosen/chosen.jquery.js' %}"></script>
 <script>
-    $(".chosen-select").chosen()
     $(document).ready(function () {
+        $('.chosen-select').chosen();
         $('#cpf').mask('000.000.000-00', { reverse: true });
     });
 </script>
