@@ -33,33 +33,25 @@
             <input type="text" class="form-control" id="{{ form.contato.id }}" required>
         </div>
         <div class="mb-3">
-            {% for projeto in form.projetos %}
-            <option value="{{projeto.pk}}">{{projeto}}</option>
-            {% endfor %}
-            <select for="{{form.projetos.id}}" data-placeholder="Selecionar projetos" multiple="" class="chosen-select" tabindex="4" style="display: none;">
-                {% for projeto in form.projetos %}
-                <option value="{{projeto.pk}}">{{projeto}}</option>
-                {% endfor %}
-            </select>
-
+            <div class="multiselect">
+                <div class="selectBox" onclick="showCheckboxes()">
+                  <select class="form-control" for="{{form.projetos.id}}">
+                    <option>Selecionar Projetos</option>
+                  </select>
+                  <div class="overSelect"></div>
+                </div>
+                <div id="checkboxes">
+                    {% for projeto in form.projetos %}
+                    <div class="d-flex flex-row" >
+                        
+                        <!-- <label for="{{projeto.pk}}" class="form-label"> -->
+                            <input type="checkbox" id="{{projeto.pk}}" />{{projeto}}</input>
+                        </div>
+                    {% endfor %}
+                </div>
+              </div>
         </div>
-        <!-- Seleção de tipo de usuário -->
-        <!-- <div class="mb-3">
-                <label class="form-label">Tipo de Usuário</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="tipoUsuario" id="administrador" value="administrador" required>
-                    <label class="form-check-label" for="administrador">Administrador</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="tipoUsuario" id="stakeholder" value="stakeholder">
-                    <label class="form-check-label" for="stakeholder">Stakeholder</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="tipoUsuario" id="gerenteProjeto" value="gerenteProjeto">
-                    <label class="form-check-label" for="gerenteProjeto">Gerente de Projeto</label>
-                </div>
-            </div> -->
-        <!-- Botão de enviar -->
+        
         <div class="d-grid gap-2">
             <button type="submit" class="btn btn-primary">Cadastrar</button>
         </div>
@@ -67,11 +59,22 @@
 </div>
 {% endblock %}
 {% block custom_scripts %}
-<script src="{% static 'chosen/chosen.jquery.js' %}"></script>
 <script>
     $(document).ready(function () {
-        $('.chosen-select').chosen();
         $('#cpf').mask('000.000.000-00', { reverse: true });
     });
+
+    var expanded = false;
+
+        function showCheckboxes() {
+        var checkboxes = document.getElementById("checkboxes");
+        if (!expanded) {
+            checkboxes.style.display = "block";
+            expanded = true;
+        } else {
+            checkboxes.style.display = "none";
+            expanded = false;
+        }
+        }
 </script>
 {% endblock %}

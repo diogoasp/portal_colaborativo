@@ -18,7 +18,6 @@ class UserController():
         return usuario
     @classmethod
     def get_projects(self, user):
-        print(user.__class__.__name__ )
         if user.__class__.__name__ == 'Stakeholder':
             projetos = Projeto.objects.filter(stakeholders=user)
         else:
@@ -103,7 +102,6 @@ class ResponderInteracaoView(LoginRequiredMixin,TemplateView):
         pergunta = None
         resposta = []
         for key,value in request.POST.items():
-            print(key,value)
             if key.split('-')[0] == 'question':
                 pergunta = Pergunta.objects.create(pergunta=value)
             elif key.split('-')[0] == 'answer':
@@ -118,7 +116,6 @@ class ConstrucaoView(TemplateView):
 class UserCreateView(TemplateView):
     def get(self, request):
         usuario = UserCreateForm()
-        print(usuario['projetos'])
         return render(request, 'usuario/cadastro_usuario.html', {'form': usuario})
     
     def post(self, request):

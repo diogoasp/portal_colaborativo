@@ -1,6 +1,7 @@
+{% load filter %}
 {% load static %}
 <nav class="navbar navbar-inverse navbar-dark bg-dark">
-  <div class="navbar-header" style="width:33%">
+  <div class="navbar-header" style="width:22%">
     <img style="width: 5%;margin-right: 2%;" src="{% static 'logo_1.png' %}" alt="" srcset="">
     <a class="navbar-brand" href="#">Portal Colaborativo de Gestão</a>
   </div>
@@ -20,10 +21,15 @@
       <li class="nav-item mx-2">
         <a class="nav-link" href="{% url '404' %}">Contato</a>
       </li>
+      {% if request.user|has_group:"gerente" %} 
+      <li class="nav-item mx-2">
+        <a class="btn btn-primary" href="{% url 'criar_usuario' %}">Adicionar Stakeholder</a>
+      </li>
+      {% endif %}
     </ul>
-  <ul class="nav navbar-nav navbar-right text-white d-flex flex-row" style="width:33%; justify-content:end">
+  <ul class="nav navbar-nav navbar-right text-white d-flex flex-row" style="width:22%; justify-content:end">
     {% if user.is_authenticated  %}
-      <li class="mx-2" style="align-content: center;">Olá, {{usuario.nome}}</li>
+      <li class="mx-2" style="align-content: center;">{{user.first_name }}</li>
       <li><a href="{% url 'logout' %}" class="btn btn-danger">Sair</a></li>
     {% else %}
       <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> -->
